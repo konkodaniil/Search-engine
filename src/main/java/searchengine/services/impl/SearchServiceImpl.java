@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import searchengine.dto.statistics.StatisticsSearch;
+import searchengine.exception.EmptyRequestException;
 import searchengine.model.DBPage;
 import searchengine.model.DBSite;
 import searchengine.model.Index;
@@ -16,7 +17,14 @@ import searchengine.repository.SiteRepository;
 import searchengine.services.SearchService;
 import searchengine.utils.CleanHtmlCode;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -65,6 +73,9 @@ public class SearchServiceImpl implements SearchService {
     @Override
     public List<StatisticsSearch> siteSearch(String searchText, String url, int offset, int limit) {
         log.info("Searching for \"" + searchText + "\" in - " + url);
+        if (searchText.isEmpty()) {
+            throw new EmptyRequestException();
+        }
         DBSite site = siteRepository.findByUrl(url);
         List<String> textLemmaList = getLemmaFromSearchText(searchText);
         List<Lemma> foundLemmaList = getLemmaListFromSite(textLemmaList, site);

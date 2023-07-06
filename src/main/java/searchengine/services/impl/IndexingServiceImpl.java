@@ -2,10 +2,10 @@ package searchengine.services.impl;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import searchengine.config.Site;
 import searchengine.config.SitesList;
+import searchengine.exception.IndexingAlreadyStartedException;
 import searchengine.model.DBSite;
 import searchengine.model.Status;
 import searchengine.parser.IndexParser;
@@ -56,12 +56,12 @@ public class IndexingServiceImpl implements IndexingService {
             return false;
         }
     }
+
     @Override
-    @Autowired
-    public boolean startIndexing() {
+    public void startIndexing() {
         if (isIndexingActive()) {
             log.debug("Indexing already started");
-            return false;
+            throw new IndexingAlreadyStartedException();
         } else {
             List<Site> siteList = sitesList.getSites();
             executorService = Executors.newFixedThreadPool(10);
@@ -74,7 +74,6 @@ public class IndexingServiceImpl implements IndexingService {
             }
             executorService.shutdown();
         }
-        return true;
     }
 
     @Override

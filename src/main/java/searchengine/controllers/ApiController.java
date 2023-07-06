@@ -43,12 +43,8 @@ public class ApiController {
     @GetMapping("/startIndexing")
     @Operation(summary = "Site indexing")
     public ResponseEntity<Object> startIndexing() {
-        if (indexingService.startIndexing()) {
-            return new ResponseEntity<>(new Response(true), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(new BadRequest(false, "Indexing not started"),
-                    HttpStatus.BAD_REQUEST);
-        }
+        indexingService.startIndexing();
+        return new ResponseEntity<>(new Response(true), HttpStatus.OK);
     }
 
     @GetMapping("/stopIndexing")
@@ -65,26 +61,23 @@ public class ApiController {
     @GetMapping("/search")
     @Operation(summary = "Search")
     public ResponseEntity<Object> search(@RequestParam(name = "query", required = false, defaultValue = "")
-                                         String request, @RequestParam(name = "site", required = false, defaultValue = "") String site,
+                                                 String request, @RequestParam(name = "site", required = false, defaultValue = "") String site,
                                          @RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
                                          @RequestParam(name = "limit", required = false, defaultValue = "20") int limit) {
-        if (request.isEmpty()) {
-            return new ResponseEntity<>(new BadRequest(false, "Empty request"), HttpStatus.BAD_REQUEST);
-        } else {
-            List<StatisticsSearch> searchData;
-            if (!site.isEmpty()) {
-                if (siteRepository.findByUrl(site) == null) {
-                    return new ResponseEntity<>(new BadRequest(false, "Required page not found"),
-                            HttpStatus.BAD_REQUEST);
-                } else {
-                    searchData = searchService.siteSearch(request, site, offset, limit);
-                }
+
+        List<StatisticsSearch> searchData;
+        if (!site.isEmpty()) {
+            if (siteRepository.findByUrl(site) == null) {
+                return new ResponseEntity<>(new BadRequest(false, "Required page not found"),
+                        HttpStatus.BAD_REQUEST);
             } else {
-                searchData = searchService.allSiteSearch(request, offset, limit);
+                searchData = searchService.siteSearch(request, site, offset, limit);
             }
-//            return new ResponseEntity<>(new SearchResults(true, searchData.size(), searchData), HttpStatus.OK);
-            return new ResponseEntity<>(new SearchResults(true, searchData.size(), searchData), HttpStatus.OK);
+        } else {
+            searchData = searchService.allSiteSearch(request, offset, limit);
         }
+//            return new ResponseEntity<>(new SearchResults(true, searchData.size(), searchData), HttpStatus.OK);
+        return new ResponseEntity<>(new SearchResults(true, searchData.size(), searchData), HttpStatus.OK);
     }
 
     @PostMapping("/indexPage")

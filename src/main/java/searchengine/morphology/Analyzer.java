@@ -7,6 +7,8 @@ import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
 import org.apache.lucene.morphology.LuceneMorphology;
 import org.apache.lucene.morphology.russian.RussianLuceneMorphology;
+import org.apache.lucene.morphology.english.EnglishMorphology;
+
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -22,7 +24,6 @@ public class Analyzer implements Morphology {
     private final static Marker INVALID_SYMBOL_MARKER = MarkerManager.getMarker("INVALID_SYMBOL");
     private final static Logger LOGGER = LogManager.getLogger(LuceneMorphology.class);
 
-
     static {
         try {
             russianLuceneMorphology = new RussianLuceneMorphology();
@@ -36,7 +37,7 @@ public class Analyzer implements Morphology {
         content = content.toLowerCase(Locale.ROOT)
                 .replaceAll(REGEX, " ");
         HashMap<String, Integer> lemmaList = new HashMap<>();
-        String[] elements = content.toLowerCase(Locale.ROOT).split("\\s+");
+        String[] elements = content.split("\\s+");
         for (String el : elements) {
             List<String> wordsList = getLemma(el);
             for (String word : wordsList) {

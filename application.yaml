@@ -17,17 +17,7 @@ spring:
 
 indexing-settings:
   sites:
-#    - url: https://volochek.life
-#      name: Волочек
-#    - url: https://www.lenta.ru
-#      name: Лента.ру
-#    - url: https://www.skillbox.ru
-#      name: Skillbox
-    - url: https://www.playback.ru
-      name: PlayBack.Ru
-    - url: http://radiomv.ru
-      name: Radiomv.Ru
-#    - url: https://shkolakrotovskaya-r73.gosweb.gosuslugi.ru
-#      name: Кротовская школа
-#    - url: https://moldremoval.ru
-#      name: Ремовал
+    - url: https://radio-t.com
+      name: radio-t
+    - url: https://podlodka.io
+      name: podlodka

@@ -17,6 +17,7 @@ import java.util.List;
 @Table(name = "lemma", indexes = {@javax.persistence.Index(name = "lemma_list", columnList = "lemma")})
 @NoArgsConstructor
 public class Lemma implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

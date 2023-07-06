@@ -55,7 +55,15 @@ public class HtmlParser extends RecursiveTask<List<PageStatistics>> {
             List<HtmlParser> taskList = new ArrayList<>();
             for (Element el : elements) {
                 String link = el.attr("abs:href");
-                if (link.startsWith(el.baseUri()) && !link.equals(el.baseUri()) && !link.contains("#") && !link.contains(".pdf") && !link.contains(".jpg") && !link.contains(".JPG") && !link.contains(".png") && !addressList.contains(link)) {
+                if (link.startsWith(el.baseUri())
+                        && !link.equals(el.baseUri())
+                        && !link.contains("#")
+                        && !link.contains(".pdf")
+                        && !link.contains(".jpg")
+                        && !link.contains(".JPG")
+                        && !link.contains(".png")
+                        && !addressList.contains(link)) {
+                    addressList.add(link);
                     HtmlParser task = new HtmlParser(link, statisticsPageList, addressList);
                     task.fork();
                     taskList.add(task);
