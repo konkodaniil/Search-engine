@@ -1,0 +1,45 @@
+server:
+    port: 8080
+
+logging:
+    level:
+        ROOT: DEBUG
+        org.springframework: ERROR
+        org.springframework.data: ERROR
+        org.mysql: ERROR
+
+spring:
+    profiles:
+        active: dev
+######################
+#        active: prod
+######################
+    datasource:
+        username: skillbox
+        password: Skillbox
+        url: jdbc:mysql://localhost:3306/search_engine?useSSL=false&requireSSL=false&allowPublicKeyRetrieval=true
+    jpa:
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.MySQL8Dialect
+        hibernate:
+            ddl-auto: update
+        show-sql: true
+
+indexing-settings:
+    sites:
+        -   url: https://radiomv.ru
+            name: Радио Милицейская Волна
+#################################################
+#    sites:
+#        -   url: https://www.svetlovka.ru
+#            name: Библиотека им. М.А. Светлова
+#        -   url: https://et-cetera.ru/mobile
+#            name: Московский театр «Et Cetera»
+#################################################
+
+jsoup:
+    user-agent: PrettySearchBot
+    referrer: https://www.google.com
+    timeout-min: 50
+    timeout-max: 150

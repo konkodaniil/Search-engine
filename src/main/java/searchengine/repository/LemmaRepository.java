@@ -1,22 +1,13 @@
 package searchengine.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import searchengine.model.DBSite;
-import searchengine.model.Lemma;
+import org.springframework.stereotype.Repository;
+import searchengine.model.LemmaEntity;
+import searchengine.model.SiteEntity;
 
-import java.util.List;
+@Repository
+public interface LemmaRepository extends JpaRepository<LemmaEntity, Integer> {
+    LemmaEntity findByLemmaAndSiteEntityId(String lemma, int siteEntityId);
 
-public interface LemmaRepository extends JpaRepository<Lemma, Long> {
-    long countBySitePageId(DBSite DBSite);
-
-    List<Lemma> findBySitePageId(DBSite DBSite);
-
-    @Query(value = "SELECT l.* FROM lemma l WHERE l.lemma IN :lemmas AND l.site_id = :site", nativeQuery = true)
-    List<Lemma> findLemmaListBySite(@Param("lemmas") List<String> lemmaList,
-                                    @Param("site") DBSite DBSite);
-
-    @Query(value = "SELECT l.* FROM lemma l WHERE l.lemma = :lemma ORDER BY frequency ASC", nativeQuery = true)
-    List<Lemma> findByLemma(@Param("lemma") String lemma);
+    int countLemmasBySiteEntity(SiteEntity siteEntity);
 }

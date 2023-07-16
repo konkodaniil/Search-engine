@@ -1,16 +1,18 @@
 package searchengine.config;
 
-import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+@Component
+@ConfigurationProperties(prefix = "jsoup")
 @Getter
 @Setter
-@Component
-@ConfigurationProperties(prefix = "indexing-settings")
-public class SitesList {
+public class JsoupConfiguration {
 
-    private List<Site> sites;
+    private int timeoutMin;
+    private int timeoutMax;
+    private String referrer;
+    private String userAgent;
 }
